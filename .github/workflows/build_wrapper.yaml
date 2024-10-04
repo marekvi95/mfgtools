@@ -107,6 +107,9 @@ jobs:
           name: libuuu-macos-arm64
           path: ./arm64
 
+      - name: Create build directory
+        run: mkdir -p ./wrapper/build
+
       - name: Create universal dylib
         run: |
           lipo -create -output ./wrapper/build/libuuu_universal.dylib ./x86_64/libuuu.dylib ./arm64/libuuu.dylib
