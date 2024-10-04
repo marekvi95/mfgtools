@@ -89,19 +89,19 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: libuuu-ubuntu
+          name: libuuu-ubuntu-${{ matrix.arch }}
           path: ./wrapper/build/libuuu.so
 
   create-universal-dylib:
     runs-on: macos-latest
     needs: build-dlls
     steps:
-      - name: Download artifacts
+      - name: Download x86_64 artifacts
         uses: actions/download-artifact@v4
         with:
           name: libuuu-macos-x86_64
           path: ./x86_64
-      - name: Download artifacts
+      - name: Download arm64 artifacts
         uses: actions/download-artifact@v4
         with:
           name: libuuu-macos-arm64
