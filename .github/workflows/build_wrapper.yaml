@@ -88,7 +88,7 @@ jobs:
         if: matrix.os == 'macos-latest'
         uses: actions/upload-artifact@v4
         with:
-          name: libuuu-macos-${{ matrix.arch }}
+          name: pre-libuuu-macos-${{ matrix.arch }}
           path: ./wrapper/build/libuuu.dylib
 
       - name: Upload artifacts Ubuntu
@@ -105,12 +105,12 @@ jobs:
       - name: Download x86_64 artifacts
         uses: actions/download-artifact@v4
         with:
-          name: libuuu-macos-x86_64
+          name: pre-libuuu-macos-x86_64
           path: ./x86_64
       - name: Download arm64 artifacts
         uses: actions/download-artifact@v4
         with:
-          name: libuuu-macos-arm64
+          name: pre-libuuu-macos-arm64
           path: ./arm64
 
       - name: Create build directory
@@ -118,13 +118,13 @@ jobs:
 
       - name: Create universal dylib
         run: |
-          lipo -create -output ./wrapper/build/libuuu_universal.dylib ./x86_64/libuuu.dylib ./arm64/libuuu.dylib
+          lipo -create -output ./wrapper/build/libuuu.dylib ./x86_64/libuuu.dylib ./arm64/libuuu.dylib
 
       - name: Upload universal dylib
         uses: actions/upload-artifact@v4
         with:
           name: libuuu-macos-universal
-          path: ./wrapper/build/libuuu_universal.dylib
+          path: ./wrapper/build/libuuu.dylib
 
   build-libuuu-wrapper:
     runs-on: ubuntu-latest
