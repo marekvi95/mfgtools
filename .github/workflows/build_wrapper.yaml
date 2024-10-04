@@ -14,6 +14,8 @@ jobs:
         exclude:
           - os: windows-latest
             arch: arm64
+          - os: ubuntu-latest
+            arch: arm64
 
     steps:
       - name: Checkout uuu repository
@@ -55,22 +57,13 @@ jobs:
         run: |
           choco install cmake pkgconfiglite
 
-      - name: Install cross-compilation tools for Ubuntu aarch64
-        if: matrix.os == 'ubuntu-latest' && matrix.arch == 'arm64'
-        run: |
-          sudo apt-get install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-
       - name: Build on Ubuntu and MacOS
         working-directory: ./wrapper
         if: matrix.os != 'windows-latest'
         run: |
           export PATH=$VCPKG_ROOT:$PATH
           if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
-            if [ "${{ matrix.arch }}" == "arm64" ]; then
-              cmake --preset=unix -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake -DCMAKE_SYSTEM_NAME=Linux -DCMAKE_SYSTEM_PROCESSOR=aarch64 -DCMAKE_C_COMPILER=aarch64-linux-gnu-gcc -DCMAKE_CXX_COMPILER=aarch64-linux-gnu-g++;
-            else
-              cmake --preset=unix;
-            fi
+            cmake --preset=unix;
           else
             cmake --preset=unix -DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }};
           fi
