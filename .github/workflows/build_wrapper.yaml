@@ -1,7 +1,14 @@
 name: Multiplatform build of libuuu wrapper python package
 on:
   push:
-    branches: ["**"]
+    branches:
+      - master
+    tags:
+      - uuu*
+  pull_request:
+    types:
+      - opened
+      - synchronize
 
 jobs:
   build-dlls:
